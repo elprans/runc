@@ -2,6 +2,7 @@ package fs2
 
 import (
 	"fmt"
+	"runtime/debug"
 
 	"golang.org/x/sys/unix"
 
@@ -10,6 +11,7 @@ import (
 	"github.com/opencontainers/runc/libcontainer/configs"
 	"github.com/opencontainers/runc/libcontainer/devices"
 	"github.com/opencontainers/runc/libcontainer/userns"
+	"github.com/sirupsen/logrus"
 )
 
 func isRWM(perms devices.Permissions) bool {
@@ -57,6 +59,8 @@ func setDevices(dirPath string, r *configs.Resources) error {
 	if r.SkipDevices {
 		return nil
 	}
+	logrus.Infof("configuring device rules on %s: %v", dirPath, r.Devices)
+	logrus.Infof("stack: %s", string(debug.Stack()))
 	insts, license, err := devicefilter.DeviceFilter(r.Devices)
 	if err != nil {
 		return err
