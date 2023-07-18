@@ -166,6 +166,7 @@ func LoadAttachCgroupDeviceFilter(insts asm.Instructions, license string, dirFd 
 
 	// Generate new program.
 	spec := &ebpf.ProgramSpec{
+		Name:         "libcontainer_devrules",
 		Type:         ebpf.CGroupDevice,
 		Instructions: insts,
 		License:      license,
